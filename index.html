@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weekly Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Weekly Planner</h1>
+  <div class="header">
+    <div>Month: <input type="text" id="month" readonly /></div>
+    <div>Week: <input type="text" id="week" readonly /></div>
+  </div>
+
+  <div class="planner">
+    <div class="box"><h3>Sunday</h3><textarea id="sunday" readonly></textarea></div>
+    <div class="box"><h3>Monday</h3><textarea id="monday" readonly></textarea></div>
+    <div class="box"><h3>To Do</h3>
+      <div class="todo-list" id="todo"></div>
+    </div>
+    <div class="box"><h3>Tuesday</h3><textarea id="tuesday" readonly></textarea></div>
+    <div class="box"><h3>Wednesday</h3><textarea id="wednesday" readonly></textarea></div>
+    <div class="box"><h3>Thursday</h3><textarea id="thursday" readonly></textarea></div>
+    <div class="box"><h3>Friday</h3><textarea id="friday" readonly></textarea></div>
+    <div class="box"><h3>Saturday</h3><textarea id="saturday" readonly></textarea></div>
+    <div class="box notes"><h3>Notes</h3><textarea id="notes" readonly></textarea></div>
+  </div>
+
+  <script>
+    fetch('data.txt')
+      .then(response => response.text())
+      .then(text => {
+        const lines = text.split('\n');
+  
+        const content = {
+          month: '',
+          week: '',
+          todo: [],
+          notes: '',
+          sunday: '',
+          monday: '',
+          tuesday: '',
+          wednesday: '',
+          thursday: '',
+          friday: '',
+          saturday: ''
+        };
+  
+        let currentKey = '';
+        lines.forEach(line => {
+          line = line.trim();
+  
+          if (line.startsWith('Month:')) {
+            content.month = line.replace('Month:', '').trim();
+          } else if (line.startsWith('Week:')) {
+            content.week = line.replace('Week:', '').trim();
+          } else if (line.startsWith('To Do:')) {
+            currentKey = 'todo';
+          } else if (line.endsWith(':') && content.hasOwnProperty(line.toLowerCase().replace(':', ''))) {
+            currentKey = line.toLowerCase().replace(':', '');
+          } else if (line.startsWith('-')) {
+            if (currentKey === 'todo') content.todo.push(line);
+            else if (currentKey) content[currentKey] += line + '\n';
+          } else if (currentKey && line !== '') {
+            content[currentKey] += line + '\n';
+          }
+        });
+  
+        document.getElementById('month').value = content.month;
+        document.getElementById('week').value = content.week;
+  
+        Object.keys(content).forEach(key => {
+          if (key === 'todo') {
+            const listDiv = document.getElementById('todo');
+            content.todo.forEach(task => {
+              const input = document.createElement('input');
+              input.type = 'text';
+              input.readOnly = true;
+  
+              const colorMatch = task.match(/\[(#.*?)\]/);
+              if (colorMatch) {
+                const color = colorMatch[1].trim();
+                input.style.borderLeft = `5px solid ${color}`;
+                input.style.background = '#fff7f9';
+                input.style.color = '#842323';
+                input.style.padding = '8px 12px';
+                input.style.borderRadius = '6px';
+                input.style.boxShadow = '1px 1px 4px rgba(0,0,0,0.1)';
+                task = task.replace(/\[(#.*?)\]\s*/, ''); // xoá [#hex] trong nội dung
+              }
+  
+              input.value = task;
+              listDiv.appendChild(input);
+            });
+          } else if (document.getElementById(key)) {
+            document.getElementById(key).value = content[key].trim();
+          }
+        });
+      })
+      .catch(error => {
+        alert('Error loading data.txt: ' + error);
+      });
+  </script>
+  
+
+</body>
+</html>
