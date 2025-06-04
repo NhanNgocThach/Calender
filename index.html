@@ -32,7 +32,7 @@
       .then(response => response.text())
       .then(text => {
         const lines = text.split('\n');
-  
+
         const content = {
           month: '',
           week: '',
@@ -46,11 +46,11 @@
           friday: '',
           saturday: ''
         };
-  
+
         let currentKey = '';
         lines.forEach(line => {
           line = line.trim();
-  
+
           if (line.startsWith('Month:')) {
             content.month = line.replace('Month:', '').trim();
           } else if (line.startsWith('Week:')) {
@@ -66,10 +66,10 @@
             content[currentKey] += line + '\n';
           }
         });
-  
+
         document.getElementById('month').value = content.month;
         document.getElementById('week').value = content.week;
-  
+
         Object.keys(content).forEach(key => {
           if (key === 'todo') {
             const listDiv = document.getElementById('todo');
@@ -77,24 +77,34 @@
               const input = document.createElement('input');
               input.type = 'text';
               input.readOnly = true;
-  
+
               const colorMatch = task.match(/\[(#.*?)\]/);
               if (colorMatch) {
                 const color = colorMatch[1].trim();
                 input.style.borderLeft = `5px solid ${color}`;
                 input.style.background = '#fff7f9';
                 input.style.color = '#842323';
+
+                input.style.background = '#fff7f9';
+                input.style.color = '#842323';
                 input.style.padding = '8px 12px';
                 input.style.borderRadius = '6px';
                 input.style.boxShadow = '1px 1px 4px rgba(0,0,0,0.1)';
-                task = task.replace(/\[(#.*?)\]\s*/, ''); // xoá [#hex] trong nội dung
+                task = task.replace(/\[(#.*?)\]\s*/, '');
               }
-  
+
               input.value = task;
               listDiv.appendChild(input);
             });
           } else if (document.getElementById(key)) {
-            document.getElementById(key).value = content[key].trim();
+            const textarea = document.getElementById(key);
+            const colorMatch = content[key].match(/\[(#.*?)\]/);
+            if (colorMatch) {
+              const color = colorMatch[1].trim();
+              textarea.style.color = color;
+              content[key] = content[key].replace(/\[(#.*?)\]\s*/, '');
+            }
+            textarea.value = content[key].trim();
           }
         });
       })
@@ -102,7 +112,6 @@
         alert('Error loading data.txt: ' + error);
       });
   </script>
-  
 
 </body>
 </html>

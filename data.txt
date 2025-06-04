@@ -5,7 +5,7 @@ To Do:
 
 
 Sunday:
-[#f67280] Đi làm 9h-10h
+[#f67280] Đi làm 9h-22h
 
 Monday:
 
@@ -17,10 +17,10 @@ Wednesday:
 
 
 Thursday:
-- [#f67280] Đi làm 2h-10h
+[#f67280] Đi làm 14h-22h
 
 Friday:
-- Đi làm 8h-11h
+[#f67280] Đi làm 8h-23h
 
 Saturday:
 
