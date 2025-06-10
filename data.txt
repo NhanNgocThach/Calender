@@ -1,5 +1,5 @@
 Month: June
-Week: 2 - 8
+Week: 9 - 15
 
 To Do:
 
@@ -11,19 +11,20 @@ Monday:
 
 
 Tuesday:
-
+[#f67280] Đi trường 13h30
+[#f67280] Đi làm 16h30-22h
 
 Wednesday:
-
+[#f67280] Đi làm 16h30-22h
 
 Thursday:
-[#f67280] Đi làm 14h-22h
+[#f67280] Đi làm 16h30-22h
 
 Friday:
 [#f67280] Đi làm 8h-23h
 
 Saturday:
-
+[#f67280] Đi làm 8h-22h
 
 Notes:
 
